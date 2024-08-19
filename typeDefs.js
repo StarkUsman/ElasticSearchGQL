@@ -1,21 +1,22 @@
 const { gql } = require('graphql-tag');
+
 const typeDefs = gql`
-  scalar JSON
+scalar JSON
 
   type Query {
-    getDocuments(index: String!, query: String, size: Int): [Document]
-    getDocumentById(index: String!, id: ID!): Document
+    getDocuments(index: String!, query: String, size: Int, fields: [String]): [Document]
+    getDocumentById(index: String!, id: ID!, fields: [String]): Document
   }
 
   type Document {
     id: ID!
-    data: JSON
+    fields: JSON
   }
 
   type Mutation {
     createIndex(index: String!): IndexResponse
-    indexDocument(index: String!, id: ID!, title: String!, content: String!): DocumentResponse
-    updateDocument(index: String!, id: ID!, title: String!, content: String!, newField: String): DocumentResponse
+    indexDocument(index: String!, id: ID!, document: JSON!, fields: [String]): DocumentResponse
+    updateDocument(index: String!, id: ID!, document: JSON!, fields: [String]): DocumentResponse
     deleteDocument(index: String!, id: ID!): DeleteResponse
     deleteIndex(index: String!): DeleteResponse
   }
